@@ -1,0 +1,45 @@
+/*
+Theme Name: Keystone
+Theme URI: https://github.com/codeROCK-IZZY/wordpress-block-theme
+Author: Israel Rocklyn
+Author URI: https://israelrocklyn.info
+Description: A fast, accessible block theme for local service businesses: clinics, trades, studios and shops. System fonts, no theme JavaScript, patterns for services, pricing, testimonials, FAQs and contact details, and three colour variations checked for WCAG AA contrast.
+Requires at least: 6.6
+Tested up to: 7.1
+Requires PHP: 8.1
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: keystone
+Tags: full-site-editing, block-patterns, block-styles, style-variations, accessibility-ready, one-column, wide-blocks, custom-colors, editor-style, translation-ready
+*/
+
+/* Nearly all styling lives in theme.json. These few rules cover what theme.json cannot express. */
+
+/* Visible focus for everything keyboard users can reach. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 2px solid currentcolor;
+	outline-offset: 3px;
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* FAQ disclosure marker that matches the theme instead of the browser default triangle. */
+.wp-block-details summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+/* Header, main and footer sit flush: each template's main sets its own padding, so full-width bands touch. */
+.wp-site-blocks > * + * {
+	margin-block-start: 0;
+}

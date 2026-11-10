@@ -1,0 +1,166 @@
+{
+  "keystone": {
+    "home": {
+      "requests": 5,
+      "bytes": {
+        "css": 1660,
+        "html": 76318,
+        "js": 68633
+      },
+      "total": 146611,
+      "axe": [],
+      "lighthouse": {
+        "performance": 69,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1588,
+        "cls": 0,
+        "tbt_ms": 2892,
+        "runs": 3
+      }
+    },
+    "page": {
+      "requests": 5,
+      "bytes": {
+        "css": 1660,
+        "html": 60736,
+        "js": 68633
+      },
+      "total": 131029,
+      "axe": [],
+      "lighthouse": {
+        "performance": 81,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1542,
+        "cls": 0,
+        "tbt_ms": 766,
+        "runs": 3
+      }
+    },
+    "post": {
+      "requests": 6,
+      "bytes": {
+        "html": 62207,
+        "css": 1660,
+        "js": 69960
+      },
+      "total": 133827,
+      "axe": [],
+      "lighthouse": {
+        "performance": 68,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1522,
+        "cls": 0,
+        "tbt_ms": 3989,
+        "runs": 3
+      }
+    },
+    "blog": {
+      "requests": 6,
+      "bytes": {
+        "html": 65325,
+        "js": 69960,
+        "css": 1660
+      },
+      "total": 136945,
+      "axe": [],
+      "lighthouse": {
+        "performance": 79,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 82,
+        "lcp_ms": 1601,
+        "cls": 0,
+        "tbt_ms": 918,
+        "runs": 3
+      }
+    }
+  },
+  "twentytwentyfive": {
+    "home": {
+      "requests": 5,
+      "bytes": {
+        "html": 83541,
+        "js": 68633,
+        "font": 53600
+      },
+      "total": 205774,
+      "axe": [],
+      "lighthouse": {
+        "performance": 68,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1696,
+        "cls": 0,
+        "tbt_ms": 4503,
+        "runs": 3
+      }
+    },
+    "page": {
+      "requests": 5,
+      "bytes": {
+        "html": 67709,
+        "js": 68633,
+        "font": 53600
+      },
+      "total": 189942,
+      "axe": [],
+      "lighthouse": {
+        "performance": 75,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1560,
+        "cls": 0,
+        "tbt_ms": 1242,
+        "runs": 3
+      }
+    },
+    "post": {
+      "requests": 5,
+      "bytes": {
+        "html": 77974,
+        "js": 68633,
+        "font": 53600
+      },
+      "total": 200207,
+      "axe": [],
+      "lighthouse": {
+        "performance": 66,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 92,
+        "lcp_ms": 1560,
+        "cls": 0,
+        "tbt_ms": 7356,
+        "runs": 3
+      }
+    },
+    "blog": {
+      "requests": 5,
+      "bytes": {
+        "html": 73533,
+        "js": 68633,
+        "font": 53600
+      },
+      "total": 195766,
+      "axe": [],
+      "lighthouse": {
+        "performance": 83,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 91,
+        "lcp_ms": 1560,
+        "cls": 0,
+        "tbt_ms": 654,
+        "runs": 3
+      }
+    }
+  }
+}

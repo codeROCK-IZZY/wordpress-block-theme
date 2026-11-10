@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Coding standards and theme.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          tools: composer:v2
+          coverage: none
+      - run: composer install --no-interaction --no-progress
+      - name: WordPress coding standards (PHP 8.1+ compatibility)
+        run: vendor/bin/phpcs
+      - name: theme.json and style variations are valid JSON
+        run: for f in keystone/theme.json keystone/styles/*.json; do php -r 'json_decode(file_get_contents($argv[1]), flags: JSON_THROW_ON_ERROR);' "$f" && echo "ok $f"; done
+
+  integration:
+    name: WordPress ${{ matrix.label }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: "6.6 (oldest supported)"
+            image: wordpress:6.6-php8.3-apache
+            compare: false
+          - label: "latest, with Theme Check, axe-core, Lighthouse and evaluation"
+            image: wordpress:php8.3-apache
+            compare: true
+    env:
+      WP_IMAGE: ${{ matrix.image }}
+      MSYS_NO_PATHCONV: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Let the WordPress containers read the theme folder
+        run: chmod -R a+rwX .
+      - name: Install WordPress, demo content, theme checks and HTTP checks
+        run: bash tests/integration/run.sh
+      - name: WordPress Theme Check (fails on any REQUIRED item)
+        if: matrix.compare
+        run: |
+          docker compose exec -T cli wp plugin install theme-check --activate
+          docker compose exec -T cli wp theme-check run keystone | tee theme-check.txt
+          docker compose exec -T cli wp plugin deactivate theme-check
+          ! grep -q '^REQUIRED' theme-check.txt
+      - uses: actions/setup-python@v5
+        if: matrix.compare
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        if: matrix.compare
+        with:
+          node-version: 22
+      - name: Keystone against Twenty Twenty-Five (bytes, axe-core, Lighthouse)
+        if: matrix.compare
+        run: |
+          pip install playwright==1.48.0
+          python -m playwright install --with-deps chromium
+          npm install --no-save --prefix .tools axe-core@4.10.2 lighthouse@12.8.2
+          python eval/compare.py .tools/node_modules/axe-core/axe.min.js --lighthouse .tools/node_modules/lighthouse/cli/index.js
+      - uses: shivammathur/setup-php@v2
+        if: matrix.compare
+        with:
+          php-version: "8.3"
+          coverage: none
+      - name: Evaluation gate (contrast in every palette, page weight, axe-core, Lighthouse accessibility)
+        if: matrix.compare
+        run: php eval/run.php --gate
+      - uses: actions/upload-artifact@v4
+        if: matrix.compare && always()
+        with:
+          name: evaluation-report
+          path: eval/reports/
+
+  package:
+    name: Theme zip
+    needs: [lint, integration]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: zip -r keystone.zip keystone
+      - uses: actions/upload-artifact@v4
+        with:
+          name: keystone
+          path: keystone.zip
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest git /repo --no-banner
