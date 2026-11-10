@@ -23,7 +23,10 @@ jobs:
       - name: WordPress coding standards (PHP 8.1+ compatibility)
         run: vendor/bin/phpcs
       - name: theme.json and style variations are valid JSON
-        run: for f in keystone/theme.json keystone/styles/*.json; do php -r 'json_decode(file_get_contents($argv[1]), flags: JSON_THROW_ON_ERROR);' "$f" && echo "ok $f"; done
+        run: |
+          for f in keystone/theme.json keystone/styles/*.json; do
+            php -r 'json_decode(file_get_contents($argv[1]), flags: JSON_THROW_ON_ERROR);' "$f" && echo "ok $f"
+          done
 
   integration:
     name: WordPress ${{ matrix.label }}
