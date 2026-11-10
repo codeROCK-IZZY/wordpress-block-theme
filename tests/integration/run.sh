@@ -31,7 +31,7 @@ for path in / /about/ /news/ /brushing-guide/ "/?s=teeth" /category/uncategorize
   BODY=${RESP%$'\n'*}
   want=200; [ "$path" = "/no-such-page/" ] && want=404
   H1=$( (grep -o '<h1' <<<"$BODY" || true) | wc -l | tr -d ' ')
-  if [ "$CODE" = "$want" ] && ! grep -qi 'fatal error\|warning:' <<<"$BODY" && grep -q 'wp-skip-link' <<<"$BODY" && [ "$H1" = "1" ]; then
+  if [ "$CODE" = "$want" ] && ! grep -qi 'fatal error\|warning:' <<<"$BODY" && grep -qE 'wp-skip-link|wp--skip-link--target' <<<"$BODY" && [ "$H1" = "1" ]; then
     ok "$path → $CODE, one h1, skip link, no PHP errors"
   else
     bad "$path → $CODE (wanted $want), h1 count $H1"
